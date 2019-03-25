@@ -10,6 +10,10 @@ def money_supply(economy):
         wealth_sum += agent.wealth()
     return wealth_sum
 
+# print agent holdings summary
+def print_holdings_summary(financial_market, assets):
+    for v in financial_market:
+        print(v.type, v.id, 'has', v.wealth(assets))
 
 # write portfolio data to csv
 def archive_portfolio(agent, period, target):
@@ -38,7 +42,7 @@ def plot_wealth(data, financial_market, x='period', y='wealth'):
         agent_data = data[data['type'] == v.type]
         agent_data = agent_data[agent_data.id == v.id]
         plt.plot(agent_data[x], agent_data[y], label=v.type + ' ' + str(v.id))
-    plt.title('Agent Wealth')
+    plt.title('Agent Wealth vs Time')
     plt.xlabel(x)
     plt.ylabel(y)
     plt.legend()

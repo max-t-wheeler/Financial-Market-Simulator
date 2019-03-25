@@ -212,6 +212,7 @@ class Agent:
                     self.print_portfolio()
                     target.print_portfolio()
 
+    # print portfolio contents
     def print_portfolio(self):
         for asset_class in self.portfolio:
             for asset in self.portfolio[asset_class]:

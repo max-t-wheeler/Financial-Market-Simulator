@@ -70,8 +70,7 @@ if __name__ == "__main__":
 
     if log_money_supply:
         # print summary of initial holdings
-        for v in financial_market:
-            print(v.type, v.id, 'has', v.wealth(['currency']), 'in cash')
+        fs_functions.print_holdings_summary(financial_market, ['currency'])
 
         print('')
 
@@ -116,8 +115,7 @@ if __name__ == "__main__":
     if log_money_supply:
 
         # print summary of initial holdings
-        for v in financial_market:
-            print(v.type, v.id, 'has', v.wealth(['currency']), 'in cash')
+        fs_functions.print_holdings_summary(financial_market, ['currency'])
 
         print('')
 
