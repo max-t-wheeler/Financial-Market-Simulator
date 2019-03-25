@@ -11,6 +11,6 @@ Agents are initialized along with their portfolios (and accounts in the presence
 
 This project employs pandas and matplotlib to work with and visualize simulated data. NetworkX may also be used in the future for network visualization.
 
-Install by running the following command
+To work with this library, install the necessary dependencies by running the following command:
 
 pip install -r requirements.txt
