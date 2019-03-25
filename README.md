@@ -1,6 +1,6 @@
 # Financial-Market-Simulator
 
-This is a simple program designed to simulate transactions between agents in a financial market. Each agent within the market is a designated a trader or a financial intermediary to which each is assigned a portfolio containing various assets (claims) in five asset classes: 
+This is a simple program designed to simulate transactions between agents in a financial market. Each agent within the market is a designated a trader or a financial intermediary and each is assigned a portfolio containing various assets (claims) in five asset classes: 
 * currency (cash) 
 * stocks (equities)
 * bonds (debt instruments)
