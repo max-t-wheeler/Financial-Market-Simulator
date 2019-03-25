@@ -1,0 +1,16 @@
+# Package and distribution files
+bin/
+include/
+lib/
+lib64
+/lib64
+lib64/
+share/
+
+# PycCharm-specific files and data
+pip-selfcheck.json
+__pycache__/
+pyvenv.cfg
+
+# application data
+market-simulator/*.csv
