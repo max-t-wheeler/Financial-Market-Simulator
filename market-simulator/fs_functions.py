@@ -1,6 +1,5 @@
 import csv
 import matplotlib.pyplot as plt
-import pandas as pd
 
 
 # calculate total amount of money in a financial market
