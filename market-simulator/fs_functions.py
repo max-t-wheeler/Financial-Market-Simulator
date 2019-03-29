@@ -10,14 +10,15 @@ def money_supply(economy):
         wealth_sum += agent.wealth()
     return wealth_sum
 
+
 # print agent holdings summary
-def print_holdings_summary(financial_market, assets):
+def print_holdings_summary(financial_market, assets=None):
     for v in financial_market:
         print(v.type, v.id, 'has', v.wealth(assets))
 
+
 # write portfolio data to csv
 def archive_portfolio(agent, period, target):
-
     with open(target, 'a', newline='') as f:
         csv_writer = csv.writer(f)
         new_record = [

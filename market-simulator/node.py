@@ -224,9 +224,9 @@ class Agent:
                 print('')
 
     # return the sum of one or more asset class values
-    def wealth(self, asset_classes='all'):
+    def wealth(self, asset_classes=None):
         wealth = 0
-        if asset_classes == 'all':
+        if asset_classes is None:
             asset_classes = self.portfolio
         for asset_class in asset_classes:
             for asset in self.portfolio[asset_class]:
@@ -246,6 +246,7 @@ class FinancialIntermediary(Agent):
 
     def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans):
 
+        num_accounts = len(self.accounts)
         val = 0
 
         for i in range(currency_vals):
@@ -254,8 +255,8 @@ class FinancialIntermediary(Agent):
             self.portfolio['currency'][i].owner_class = self.type
             self.portfolio['currency'][i].owner_id = self.id
             self.portfolio['currency'][i].claim_class = self.assets[0]
-            if len(self.accounts) > 0:
-                for j in len(self.accounts):
+            if num_accounts > 0:
+                for j in range(num_accounts):
                     val = val + self.accounts[j].asset[0].value
                 self.portfolio['currency'][i].value = val
 
@@ -266,8 +267,8 @@ class FinancialIntermediary(Agent):
             self.portfolio['stocks'][i].owner_id = self.id
             self.portfolio['stocks'][i].claim_class = self.assets[1]
             self.portfolio['stocks'][i].claim_id = self.assets[1][0] + str(self.id) + str(i)
-            if len(self.accounts) > 0:
-                for j in len(self.accounts):
+            if num_accounts > 0:
+                for j in range(num_accounts):
                     val = val + self.accounts[j].asset[1].value
                 self.portfolio['stocks'][i].value = val
 
@@ -278,8 +279,8 @@ class FinancialIntermediary(Agent):
             self.portfolio['bonds'][i].owner_id = self.id
             self.portfolio['bonds'][i].claim_class = self.assets[2]
             self.portfolio['bonds'][i].claim_id = self.assets[2][0] + str(self.id) + str(i)
-            if len(self.accounts) > 0:
-                for j in len(self.accounts):
+            if num_accounts > 0:
+                for j in range(num_accounts):
                     val = val + self.accounts[j].asset[2].value
                 self.portfolio['bonds'][i].value = val
 
@@ -290,8 +291,8 @@ class FinancialIntermediary(Agent):
             self.portfolio['loans'][i].owner_id = self.id
             self.portfolio['loans'][i].claim_class = self.assets[3]
             self.portfolio['loans'][i].claim_id = self.assets[3][0] + str(self.id) + str(i)
-            if len(self.accounts) > 0:
-                for j in len(self.accounts):
+            if num_accounts > 0:
+                for j in range(num_accounts):
                     val = val + self.accounts[j].asset[i].value
                 self.portfolio['loans'][i].value = val
 
@@ -302,7 +303,7 @@ class Trader(Agent):
         super().__init__(agent_id)
         self.type = 'Trader'
 
-    def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans, num_accounts):
+    def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans, num_accounts, max_money):
 
         for i in range(currency_vals):
             asset = Claim()
@@ -310,7 +311,7 @@ class Trader(Agent):
             self.portfolio['currency'][i].owner_class = self.type
             self.portfolio['currency'][i].owner_id = self.id
             self.portfolio['currency'][i].claim_class = self.assets[0]
-            self.portfolio['currency'][i].value = np.random.random(1)[0] * 100
+            self.portfolio['currency'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_stocks):
             asset = Claim()
@@ -319,7 +320,7 @@ class Trader(Agent):
             self.portfolio['stocks'][i].owner_id = self.id
             self.portfolio['stocks'][i].claim_class = self.assets[1]
             self.portfolio['stocks'][i].claim_id = self.assets[1][0] + str(self.id) + str(i)
-            self.portfolio['stocks'][i].value = np.random.random(1)[0] * 100
+            self.portfolio['stocks'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_bonds):
             asset = Claim()
@@ -328,7 +329,7 @@ class Trader(Agent):
             self.portfolio['bonds'][i].owner_id = self.id
             self.portfolio['bonds'][i].claim_class = self.assets[2]
             self.portfolio['bonds'][i].claim_id = self.assets[2][0] + str(self.id) + str(i)
-            self.portfolio['bonds'][i].value = np.random.random(1)[0] * 100
+            self.portfolio['bonds'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_loans):
             asset = Claim()
