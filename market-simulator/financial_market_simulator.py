@@ -41,8 +41,9 @@ class FinancialMarket:
 
         self.agents = self.financial_intermediaries + self.traders
 
-    # for a specified duration, simulate transactions between traders and financial intermediaries
-    def simulate(self, t_max, file, log_portfolio=False, log_transactions=False):
+    # for a specified duration and transaction probability,
+    # simulate transactions between traders and financial intermediaries
+    def simulate(self, t_max, p_trade, file, log_portfolio=False, log_transactions=False):
 
         # at each time step, archive the current state of each agent
         # and perform random transaction between randomly selected pairs of nodes
@@ -53,7 +54,7 @@ class FinancialMarket:
                 fs_functions.archive_portfolio(u, t, file)
 
                 for v in self.agents[(self.agents.index(u) + 1):]:
-                    if np.random.random(1) > 0.5:
+                    if np.random.random(1) > p_trade:
 
                         # generate random transaction type
                         # 1: borrow; 2: lend; 3: trade; 4: deposit; 5: withdraw
@@ -124,7 +125,7 @@ if __name__ == "__main__":
     market.summary(['currency', 'stocks', 'bonds'])
 
     # simulate agent-agent transactions
-    market.simulate(3000, file=DATA_FILE, log_portfolio=False, log_transactions=False)
+    market.simulate(3000, 0.5, file=DATA_FILE, log_portfolio=False, log_transactions=False)
 
     # display final holdings
     market.summary(['currency', 'stocks', 'bonds'])
