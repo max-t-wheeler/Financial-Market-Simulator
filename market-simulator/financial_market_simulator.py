@@ -99,7 +99,6 @@ if __name__ == "__main__":
 
     # declare constants
     DATA_FILE = 'data.csv'
-    MAX_MONEY = 10000
 
     # initialize file for use in dataframe generation
     with open(DATA_FILE, 'w', newline='') as f:
@@ -119,17 +118,18 @@ if __name__ == "__main__":
     f.close()
 
     # create market
-    market = FinancialMarket(0, 5, MAX_MONEY)
+    market = FinancialMarket(0, 5, 10000)
 
     # display initial holdings
     market.summary(['currency', 'stocks', 'bonds'])
 
+    # simulate agent-agent transactions
     market.simulate(3000, file=DATA_FILE, log_portfolio=False, log_transactions=False)
 
     # display final holdings
     market.summary(['currency', 'stocks', 'bonds'])
 
-    # generate dataframe
+    # load data generated during simulation
     df = pd.read_csv(DATA_FILE)
 
     # plot wealth totals for all agents
