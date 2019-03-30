@@ -3,12 +3,12 @@ import numpy as np
 
 
 class Claim:
-    def __init__(self):
-        self.owner_class = ''
-        self.owner_id = ''
-        self.claim_title = ''
-        self.claim_id = ''
-        self.value = 0
+    def __init__(self, owner_class, owner_id, claim_class, claim_id, value):
+        self.owner_class = owner_class
+        self.owner_id = owner_id
+        self.claim_class = claim_class
+        self.claim_id = claim_id
+        self.value = value
 
 
 class Account:
@@ -247,54 +247,34 @@ class FinancialIntermediary(Agent):
     def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans):
 
         num_accounts = len(self.accounts)
-        val = 0
 
         for i in range(currency_vals):
-            asset = Claim()
-            self.portfolio['currency'].append(asset)
-            self.portfolio['currency'][i].owner_class = self.type
-            self.portfolio['currency'][i].owner_id = self.id
-            self.portfolio['currency'][i].claim_class = self.assets[0]
+            asset = Claim(self.type, self.id, self.assets[0], '', 0)
             if num_accounts > 0:
                 for j in range(num_accounts):
-                    val = val + self.accounts[j].asset[0].value
-                self.portfolio['currency'][i].value = val
+                    asset.value = asset.value + self.accounts[j].asset[0].value
+            self.portfolio['currency'].append(asset)
 
         for i in range(num_stocks):
-            asset = Claim()
-            self.portfolio['stocks'].append(asset)
-            self.portfolio['stocks'][i].owner_class = self.type
-            self.portfolio['stocks'][i].owner_id = self.id
-            self.portfolio['stocks'][i].claim_class = self.assets[1]
-            self.portfolio['stocks'][i].claim_id = self.assets[1][0] + str(self.id) + str(i)
+            asset = Claim(self.type, self.id, self.assets[1], self.assets[1][0] + str(self.id) + str(i), 0)
             if num_accounts > 0:
                 for j in range(num_accounts):
-                    val = val + self.accounts[j].asset[1].value
-                self.portfolio['stocks'][i].value = val
+                    asset.value = asset.value + self.accounts[j].asset[1].value
+            self.portfolio['stocks'].append(asset)
 
         for i in range(num_bonds):
-            asset = Claim()
-            self.portfolio['bonds'].append(asset)
-            self.portfolio['bonds'][i].owner_class = self.type
-            self.portfolio['bonds'][i].owner_id = self.id
-            self.portfolio['bonds'][i].claim_class = self.assets[2]
-            self.portfolio['bonds'][i].claim_id = self.assets[2][0] + str(self.id) + str(i)
+            asset = Claim(self.type, self.id, self.assets[2], self.assets[2][0] + str(self.id) + str(i), 0)
             if num_accounts > 0:
                 for j in range(num_accounts):
-                    val = val + self.accounts[j].asset[2].value
-                self.portfolio['bonds'][i].value = val
+                    asset.value = asset.value + self.accounts[j].asset[1].value
+            self.portfolio['bonds'].append(asset)
 
         for i in range(num_loans):
-            asset = Claim()
-            self.portfolio['loans'].append(asset)
-            self.portfolio['loans'][i].owner_class = self.type
-            self.portfolio['loans'][i].owner_id = self.id
-            self.portfolio['loans'][i].claim_class = self.assets[3]
-            self.portfolio['loans'][i].claim_id = self.assets[3][0] + str(self.id) + str(i)
+            asset = Claim(self.type, self.id, self.assets[3], self.assets[3][0] + str(self.id) + str(i), 0)
             if num_accounts > 0:
                 for j in range(num_accounts):
-                    val = val + self.accounts[j].asset[i].value
-                self.portfolio['loans'][i].value = val
+                    asset.value = asset.value + self.accounts[j].asset[3].value
+            self.portfolio['loans'].append(asset)
 
 
 class Trader(Agent):
@@ -306,47 +286,24 @@ class Trader(Agent):
     def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans, num_accounts, max_money):
 
         for i in range(currency_vals):
-            asset = Claim()
+            asset = Claim(self.type, self.id, self.assets[0], '', np.random.random(1)[0] * max_money)
             self.portfolio['currency'].append(asset)
-            self.portfolio['currency'][i].owner_class = self.type
-            self.portfolio['currency'][i].owner_id = self.id
-            self.portfolio['currency'][i].claim_class = self.assets[0]
-            self.portfolio['currency'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_stocks):
-            asset = Claim()
+            asset = Claim(self.type, self.id, self.assets[1], self.assets[1][0] + str(self.id) + str(i), np.random.random(1)[0] * max_money)
             self.portfolio['stocks'].append(asset)
-            self.portfolio['stocks'][i].owner_class = self.type
-            self.portfolio['stocks'][i].owner_id = self.id
-            self.portfolio['stocks'][i].claim_class = self.assets[1]
-            self.portfolio['stocks'][i].claim_id = self.assets[1][0] + str(self.id) + str(i)
-            self.portfolio['stocks'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_bonds):
-            asset = Claim()
+            asset = Claim(self.type, self.id, self.assets[2], self.assets[2][0] + str(self.id) + str(i), np.random.random(1)[0] * max_money)
             self.portfolio['bonds'].append(asset)
-            self.portfolio['bonds'][i].owner_class = self.type
-            self.portfolio['bonds'][i].owner_id = self.id
-            self.portfolio['bonds'][i].claim_class = self.assets[2]
-            self.portfolio['bonds'][i].claim_id = self.assets[2][0] + str(self.id) + str(i)
-            self.portfolio['bonds'][i].value = np.random.random(1)[0] * max_money
 
         for i in range(num_loans):
-            asset = Claim()
+            asset = Claim(self.type, self.id, self.assets[3], self.assets[3][0] + str(self.id) + str(i), 0)
             self.portfolio['loans'].append(asset)
-            self.portfolio['loans'][i].owner_class = self.type
-            self.portfolio['loans'][i].owner_id = self.id
-            self.portfolio['loans'][i].claim_class = self.assets[3]
-            self.portfolio['loans'][i].claim_id = self.assets[3][0] + str(self.id) + str(i)
-            self.portfolio['loans'][i].value = 0
 
         for i in range(num_accounts):
-            asset = Claim()
+            asset = Claim(self.type, self.id, self.assets[4], '', 0)
             self.portfolio['accounts'].append(asset)
-            self.portfolio['accounts'][i].owner_class = self.type
-            self.portfolio['accounts'][i].owner_id = self.id
-            self.portfolio['accounts'][i].claim_class = self.assets[4]
-            self.portfolio['accounts'][i].value = 0
 
     # allow a trader to deposit cash into an account
     def deposit_cash(self, target, amount, log_transactions=False, log_portfolio=False):
