@@ -7,10 +7,11 @@ import pandas as pd
 
 class FinancialMarket:
 
-    def __init__(self, num_financial_intermediaries, num_traders, max_money, log_portfolio=False):
+    def __init__(self, num_financial_intermediaries, num_traders, asset_cap, money_cap, log_portfolio=False):
         self.num_financial_intermediaries = num_financial_intermediaries
         self.num_traders = num_traders
-        self.max_money = max_money
+        self.asset_cap = asset_cap
+        self.money_cap = money_cap
 
         # initialize node containers
         self.financial_intermediaries = []
@@ -20,7 +21,7 @@ class FinancialMarket:
         # create a portfolio, and add it to the storage list
         for i in range(self.num_financial_intermediaries):
             bank = node.FinancialIntermediary(i)
-            bank.create_portfolio(1, 3, 1, 1)
+            bank.create_portfolio(1, np.random.random_integers(0, self.asset_cap, 1)[0], np.random.random_integers(0, self.asset_cap, 1)[0], 1)
             if log_portfolio:
                 bank.print_portfolio()
             self.financial_intermediaries.append(bank)
@@ -29,7 +30,7 @@ class FinancialMarket:
         # create a portfolio, and add it to the storage list
         for i in range(num_traders):
             trader = node.Trader(i)
-            trader.create_portfolio(1, 2, 2, 1, 1, self.max_money)
+            trader.create_portfolio(1, np.random.random_integers(0, self.asset_cap, 1)[0], np.random.random_integers(0, self.asset_cap, 1)[0], 1, 1, self.money_cap)
             if log_portfolio:
                 trader.print_portfolio()
             self.traders.append(trader)
@@ -61,10 +62,10 @@ class FinancialMarket:
                         transaction_type = np.random.random_integers(1, 5, 1)
 
                         if transaction_type == 1:
-                            u.borrow(v, np.random.random() * self.max_money, log_transactions=log_transactions,
+                            u.borrow(v, np.random.random() * self.money_cap, log_transactions=log_transactions,
                                      log_portfolio=log_portfolio)
                         elif transaction_type == 2:
-                            u.lend(v, np.random.random() * self.max_money, log_transactions=log_transactions,
+                            u.lend(v, np.random.random() * self.money_cap, log_transactions=log_transactions,
                                    log_portfolio=log_portfolio)
                         elif transaction_type == 3:
                             asset_class_u = np.random.random_integers(0, 2, 1)[0]
@@ -119,13 +120,13 @@ if __name__ == "__main__":
     f.close()
 
     # create market
-    market = FinancialMarket(0, 5, 10000)
+    market = FinancialMarket(0, 5, 3, 10000)
 
     # display initial holdings
     market.summary(['currency', 'stocks', 'bonds'])
 
     # simulate agent-agent transactions
-    market.simulate(3000, 0.5, file=DATA_FILE, log_portfolio=False, log_transactions=False)
+    market.simulate(1000, 0.5, file=DATA_FILE, log_transactions=False, log_portfolio=False)
 
     # display final holdings
     market.summary(['currency', 'stocks', 'bonds'])

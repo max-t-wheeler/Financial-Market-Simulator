@@ -283,18 +283,18 @@ class Trader(Agent):
         super().__init__(agent_id)
         self.type = 'Trader'
 
-    def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans, num_accounts, max_money):
+    def create_portfolio(self, currency_vals, num_stocks, num_bonds, num_loans, num_accounts, money_cap):
 
         for i in range(currency_vals):
-            asset = Claim(self.type, self.id, self.assets[0], '', np.random.random(1)[0] * max_money)
+            asset = Claim(self.type, self.id, self.assets[0], '', np.random.random(1)[0] * money_cap)
             self.portfolio['currency'].append(asset)
 
         for i in range(num_stocks):
-            asset = Claim(self.type, self.id, self.assets[1], self.assets[1][0] + str(self.id) + str(i), np.random.random(1)[0] * max_money)
+            asset = Claim(self.type, self.id, self.assets[1], self.assets[1][0] + str(self.id) + str(i), np.random.random(1)[0] * money_cap)
             self.portfolio['stocks'].append(asset)
 
         for i in range(num_bonds):
-            asset = Claim(self.type, self.id, self.assets[2], self.assets[2][0] + str(self.id) + str(i), np.random.random(1)[0] * max_money)
+            asset = Claim(self.type, self.id, self.assets[2], self.assets[2][0] + str(self.id) + str(i), np.random.random(1)[0] * money_cap)
             self.portfolio['bonds'].append(asset)
 
         for i in range(num_loans):
