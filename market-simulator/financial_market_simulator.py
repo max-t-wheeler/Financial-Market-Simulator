@@ -3,6 +3,7 @@ import fs_functions
 import node
 import numpy as np
 import pandas as pd
+import transactions
 
 
 class FinancialMarket:
@@ -42,6 +43,12 @@ class FinancialMarket:
 
         self.agents = self.financial_intermediaries + self.traders
 
+    # def borrow(self):
+    # def lend(self):
+    # def trade():
+    # deposit_cash():
+    # withdraw_cash():
+
     # for a specified duration and transaction probability,
     # simulate transactions between traders and financial intermediaries
     def simulate(self, t_max, p_trade, file, log_portfolio=False, log_transactions=False):
@@ -62,23 +69,23 @@ class FinancialMarket:
                         transaction_type = np.random.random_integers(1, 5, 1)
 
                         if transaction_type == 1:
-                            u.borrow(v, np.random.random() * self.money_cap, log_transactions=log_transactions,
+                            transactions.borrow(u, v, np.random.random() * self.money_cap, log_transactions=log_transactions,
                                      log_portfolio=log_portfolio)
                         elif transaction_type == 2:
-                            u.lend(v, np.random.random() * self.money_cap, log_transactions=log_transactions,
+                            transactions.lend(u, v, np.random.random() * self.money_cap, log_transactions=log_transactions,
                                    log_portfolio=log_portfolio)
                         elif transaction_type == 3:
                             asset_class_u = np.random.random_integers(0, 2, 1)[0]
                             asset_class_v = np.random.random_integers(0, 2, 1)[0]
 
                             if asset_class_u + asset_class_v > 0:
-                                u.trade(v, asset_class_u, asset_class_v, log_transactions=log_transactions,
+                                transactions.trade(u, v, asset_class_u, asset_class_v, log_transactions=log_transactions,
                                         log_portfolio=log_portfolio)
-                        elif transaction_type == 4 and u.type != v.type:
-                            u.deposit_cash(v, np.random.random() * u.portfolio['currency'][0].value,
+                        elif transaction_type == 4 and u.type != v.type and u.type != 'Financial Intermediary':
+                            transactions.deposit_cash(u, v, np.random.random() * u.portfolio['currency'][0].value,
                                            log_transactions=log_transactions, log_portfolio=log_portfolio)
-                        elif transaction_type == 5 and u.type != v.type:
-                            u.withdraw_cash(v, np.random.random() * u.portfolio['accounts'][0].value,
+                        elif transaction_type == 5 and u.type != v.type and u.type != 'Financial Intermediary':
+                            transactions.withdraw_cash(u, v, np.random.random() * u.portfolio['accounts'][0].value,
                                             log_transactions=log_transactions, log_portfolio=log_portfolio)
 
             # archive data for last node
