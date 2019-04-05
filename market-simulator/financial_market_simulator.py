@@ -133,7 +133,7 @@ if __name__ == "__main__":
     market.summary(['currency', 'stocks', 'bonds'])
 
     # simulate agent-agent transactions
-    market.simulate(1000, 0.5, file=DATA_FILE, log_transactions=False, log_portfolio=False)
+    market.simulate(1000, 0.1, file=DATA_FILE, log_transactions=False, log_portfolio=False)
 
     # display final holdings
     market.summary(['currency', 'stocks', 'bonds'])
@@ -142,4 +142,4 @@ if __name__ == "__main__":
     df = pd.read_csv(DATA_FILE)
 
     # plot wealth totals for all agents
-    fs_functions.plot_wealth(df, market.agents, 'period', 'total liquid')
+    fs_functions.plot_wealth(df, market.agents, 'period', 'total loans')
