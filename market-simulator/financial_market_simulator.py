@@ -142,4 +142,4 @@ if __name__ == "__main__":
     df = pd.read_csv(DATA_FILE)
 
     # plot wealth totals for all agents
-    fs_functions.plot_wealth(df, market.agents, 'period', 'total loans')
+    fs_functions.plot_wealth(df, market.agents, 'period', 'total liquid')
